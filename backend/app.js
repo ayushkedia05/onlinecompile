@@ -2,6 +2,9 @@ const express=require('express');
 const {generatefile}=require('./codegenerator.js')    
 var cors = require('cors')
 const{executefile}=require('./executecode.js');
+const {executefilepy}=require('./executecodepy.js');
+const {executefilejs}=require('./executecodejs.js');
+
 const app=express();
 
 app.use(cors());
@@ -19,7 +22,7 @@ res.json({hello:"world"});
 app.post('/',async (req,res)=>{
     let lang=req.body.language;
     const code=req.body.code;
-
+ console.log(lang);
     if(code===undefined)
     {
         return res.status(400).json({
@@ -32,7 +35,18 @@ app.post('/',async (req,res)=>{
       try{
 
           const filepath= await generatefile(lang,code);
-          const output=await executefile(filepath);    
+          let output;
+ console.log(lang,"dscvsd");
+
+          if(lang==='cpp')
+           output=await executefile(filepath);
+           else if(lang==='py')    
+           output=await executefilepy(filepath);
+           else if(lang==='js')
+           {
+           output=await executefilejs(filepath);
+           }
+
           console.log(req.body);
           return res.json({output});
         }

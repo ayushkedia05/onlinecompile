@@ -9,11 +9,11 @@ if(!fs.existsSync(outputpath))
 
 const executefile=(filepath)=>{
   const filename=path.basename(filepath).split(".")[0];
-  const outpath=path.join(outputpath,`${filename}`)
+  const outpath=path.join(outputpath,`${filename}.out`)
   
 return new Promise((resolve,reject) =>{
 
-  exec(`g++ ${filepath} -o ${outpath} && cd outputs && ${filename}.exe`,
+  exec(`g++ ${filepath} -o ${outpath} && cd outputs && ./${filename}.out`,
   (error,stdout,stderr) =>{
     
     if(error)

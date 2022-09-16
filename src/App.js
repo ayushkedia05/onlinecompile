@@ -19,6 +19,8 @@ export function AddLibrary(urlOfTheLibrary) {
 
 function App() {
   const [code,setcode]=useState('');
+  const [out,setout]=useState('');
+  const [language, setLanguage] = useState("cpp");
   // useEffect(()=>{
   //   let editor = ace.edit("editor");
   //   editor.setTheme("ace/theme-monokai.js");
@@ -30,12 +32,12 @@ function App() {
      console.log(code);
 
     const template={
-      language:"cpp",
+      language,
       code:code
     }
 
     const getback=axios.post('http://localhost:3000/',template);
-    console.log(getback);
+    getback.then((res)=>setout(res.data.output))
 
 
    }  
@@ -50,6 +52,21 @@ function App() {
     <React.Fragment>
     <Header></Header>
 
+    <select
+    value={language}
+    onChange={
+      (e)=>{
+        setLanguage(e.target.value);
+      }
+    }
+    >
+      <option value="cpp"> C++</option>
+      <option value='py'> python</option>
+      <option value='js'> javascript</option>
+
+
+    </select>
+
 
     <div className="edit">
 
@@ -62,10 +79,13 @@ function App() {
     }}>
       </textarea>
     
+
       
     </div>
       <div className="button">
         <button className="btn" onClick={submithandler}>submit</button>
+
+        <div > output is {out}</div>
         {/* <button className="btn">submit</button> */}
 
       </div>
